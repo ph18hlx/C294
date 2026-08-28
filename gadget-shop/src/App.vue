@@ -9,6 +9,7 @@ const gadget = ref({
   name: 'Smartphone XZ',
   price: 799,
   image: '../public/phone.jpg',
+  inStock: true,
 })
 </script>
 
@@ -23,8 +24,8 @@ const gadget = ref({
         <img :src="gadget.image" :alt="gadget.name" />
         <h2>{{ gadget.name }}</h2>
         <p>Prix: {{ gadget.price }}€</p>
-        <p class="in-stock">✅ En stock</p>
-        <p class="out-of-stock">❌ En rupture de stock</p>
+        <p v-if="gadget.inStock" class="in-stock">✅ En stock</p>
+        <p v-else class="out-of-stock">❌ En rupture de stock</p>
       </div>
     </main>
   </div>
