@@ -5,12 +5,11 @@ const intro = ref({
   titre: 'Vue Gadget Shop',
   description: 'Découvrez les derniers gadgets électroniquesde haute technologie !',
 })
-const gadget = ref({
-  name: 'Smartphone XZ',
-  price: 799,
-  image: '../public/phone.jpg',
-  inStock: true,
-})
+const gadgets = ref([
+  { name: 'Smartphone XZ', price: 799, image: '../public/phone.jpg', inStock: true },
+  { name: 'Laptop Pro', price: 1299, image: '../public/laptop.jpg', inStock: false },
+  { name: 'Écouteurs Bluetooth', price: 199, image: '../public/earbuds.jpg', inStock: true },
+])
 </script>
 
 <template>
@@ -20,12 +19,14 @@ const gadget = ref({
       <p>{{ intro.description }}</p>
     </header>
     <main class="main">
-      <div class="gadget">
-        <img :src="gadget.image" :alt="gadget.name" />
-        <h2>{{ gadget.name }}</h2>
-        <p>Prix: {{ gadget.price }}€</p>
-        <p v-if="gadget.inStock" class="in-stock">✅ En stock</p>
-        <p v-else class="out-of-stock">❌ En rupture de stock</p>
+      <div class="gadget-container">
+        <div v-for="(gadget, index) in gadgets" :key="gadget.id" class="gadget">
+          <img :src="gadget.image" :alt="gadget.name" />
+          <h2>{{ gadget.name }}</h2>
+          <p>{{ gadget.price }}</p>
+          <p v-if="gadget.inStock" class="in-stock">✅ En stock</p>
+          <p v-else class="out-of-stock">❌ En rupture de stock</p>
+        </div>
       </div>
     </main>
   </div>
@@ -97,5 +98,10 @@ body {
 .out-of-stock {
   color: #c62828;
   font-weight: bold;
+}
+.gadget-container {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 </style>
