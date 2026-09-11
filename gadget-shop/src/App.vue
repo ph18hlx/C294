@@ -6,15 +6,16 @@ const intro = ref({
   description: 'Découvrez les derniers gadgets électroniquesde haute technologie !',
 })
 const gadgets = ref([
-  { name: 'Smartphone XZ', price: 799, image: '/phone.jpg', inStock: true },
-  { name: 'Laptop Pro', price: 1299, image: '/laptop.jpg', inStock: false },
-  { name: 'Écouteurs Bluetooth', price: 199, image: '/earbuds.jpg', inStock: true },
+  { id: 1, name: 'Smartphone XZ', price: 799, image: '/phone.jpg', inStock: true },
+  { id: 2, name: 'Laptop Pro', price: 1299, image: '/laptop.jpg', inStock: false },
+  { id: 3, name: 'Écouteurs Bluetooth', price: 199, image: '/earbuds.jpg', inStock: true },
 ])
 const cart = ref([])
 function addToCart(gadget) {
   cart.value.push(gadget)
 }
 function removeFromCart(index) {
+  console.log(index)
   cart.value.splice(index, 1)
 }
 </script>
@@ -29,9 +30,9 @@ function removeFromCart(index) {
       <div class="cart">
         <h2>🛒 Mon Panier ({{ cart.length }})</h2>
         <ul>
-          <li v-for="gadget in cart" :key="gadget">
-            {{ gadget.name }} - {{ gadget.price }}
-            <button class="remove-btn" @click="removeFromCart(index, 1)">❌</button>
+          <li v-for="(carte, index) in cart" :key="carte.id">
+            {{ carte.name }} - {{ carte.price }}
+            <button class="remove-btn" @click="removeFromCart(index)">❌</button>
           </li>
         </ul>
         <p v-if="cart.length === 0">Votre panier est vide.</p>
