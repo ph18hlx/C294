@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const intro = ref({
   titre: 'Vue Gadget Shop',
@@ -11,9 +11,32 @@ const gadgets = ref([
   { id: 3, name: 'Écouteurs Bluetooth', price: 199, image: '/earbuds.jpg', inStock: true },
 ])
 const cart = ref([])
+
+const cartTotal = computed(() => {
+  // Variante avec le fonctionnel
+  return cart.value.reduce((total, gadget) => total + gadget.price, 0)
+})
+// Variante procédurale
+/*if (cart.value.length === 0) {
+    return 0
+  }
+
+  let total = 0
+  for (let gadget of cart.value) {
+    total = total + gadget.price
+  }
+
+  return (total / cart.value.length).toFixed(1)
+})*/
+
+const discountedTotal = computed(() => {
+  return cartTotal.value >= 1000 ? cartTotal.value * 0.9 : cartTotal.value
+})
+
 function addToCart(gadget) {
   cart.value.push(gadget)
 }
+
 function removeFromCart(index) {
   console.log(index)
   cart.value.splice(index, 1)
@@ -36,6 +59,12 @@ function removeFromCart(index) {
           </li>
         </ul>
         <p v-if="cart.length === 0">Votre panier est vide.</p>
+        <div class="cart-total">
+          💰 Total :
+          <span v-if="cartTotal >= 1000" class="original">{{ cartTotal }}€</span>
+          <span class="discounted">{{ discountedTotal }}€</span>
+          <span v-if="cartTotal >= 1000" class="discount-badge">-10%</span>
+        </div>
       </div>
       <div class="gadget-container">
         <div v-for="(gadget, index) in gadgets" :key="gadget.id" class="gadget">
@@ -188,5 +217,30 @@ body {
 .add-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+.cart-total {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #eee;
+  font-size: 0.95rem;
+  color: #333;
+}
+.cart-total .original {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 0.5rem;
+}
+.cart-total .discounted {
+  color: #2e7d32;
+  font-weight: bold;
+}
+.cart-total .discount-badge {
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
 }
 </style>
